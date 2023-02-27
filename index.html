@@ -5,9 +5,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 		<script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
 		<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.0/dist/chartjs-plugin-zoom.min.js"></script>
 	</head>
 	<body class="is-preload">
@@ -41,138 +39,161 @@
 					</section>
 
 				<!-- One -->
-					<section id="one" class="wrapper style2 spotlights">
-						<div style="width: 800px;"><canvas id="acquisitions"></canvas></div>
+					<section id="one" class="wrapper style2 fade-up">
+						<div class="inner">
+							<h2>Total Citizens</h2>
+							<div style="width: 100%;"><canvas id="totalCitizens" style="background-color: rgb(255, 255, 255);"></canvas></div>
+							<br>
+							<ul class="actions">
+								<li><a class="button" onclick="cTC.resetZoom()">Reset Zoom</a></li>
+							</ul>
+						</div>
 					</section>
 					<script>
-						const data = [
-							{ year: 2010, count: 10 },
-							{ year: 2011, count: 20 },
-							{ year: 2012, count: 15 },
-							{ year: 2013, count: 25 },
-							{ year: 2014, count: 22 },
-							{ year: 2015, count: 30 },
-							{ year: 2016, count: 28 },
-						];
-
-						new Chart(
-							document.getElementById('acquisitions'),
-							{
-							type: 'bar',
-							data: {
-								labels: data.map(row => row.year),
-								datasets: [
-								{
-									label: 'Acquisitions by year',
-									data: data.map(row => row.count)
+						var cTC;
+						fetch("https://opensheet.elk.sh/1JCY1OJkJhyJ9NF5QJVESdD4U5mVqxqXpxi--vDf3Yek/Data")
+						.then((res) => res.json())
+						.then((data) => {
+							cTC = new Chart(
+								document.getElementById('totalCitizens'),{
+									type: 'line',
+									data: {
+										labels: data.map(row => row.gDate),
+										datasets: [{
+											label: 'Citizens',
+											data: data.map(row => {
+												if (row.globalCitizens != undefined) {
+													var test = row.globalCitizens;
+													test = test.replace(/,/g, '')
+													return test;
+												}
+											}),
+											borderColor: '#ff0000',
+											borderWidth: 1,
+											backgroundColor: '#ffffff',
+											pointStyle: 'circle',
+											pointRadius: 3,
+											pointHoverRadius: 7
+										}]
+									},
+									options: {
+										plugins: {
+											zoom: {
+												pan: { enabled: true, mode: 'x' },
+												zoom: { wheel: { enabled: true, }, drag: { enabled: true }
+												}
+											}
+										}
+									}
 								}
-								]
-							}
-							}
-						);
+							);
+						});
 					</script>
 				<!-- Two -->
 					<section id="two" class="wrapper style3 fade-up">
 						<div class="inner">
-							<h2>What we do</h2>
-							<p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus, lacus eget hendrerit bibendum, urna est aliquam sem, sit amet imperdiet est velit quis lorem.</p>
-							<div class="features">
-								<section>
-									<span class="icon solid major fa-code"></span>
-									<h3>Lorem ipsum amet</h3>
-									<p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
-								</section>
-								<section>
-									<span class="icon solid major fa-lock"></span>
-									<h3>Aliquam sed nullam</h3>
-									<p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
-								</section>
-								<section>
-									<span class="icon solid major fa-cog"></span>
-									<h3>Sed erat ullam corper</h3>
-									<p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
-								</section>
-								<section>
-									<span class="icon solid major fa-desktop"></span>
-									<h3>Veroeros quis lorem</h3>
-									<p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
-								</section>
-								<section>
-									<span class="icon solid major fa-link"></span>
-									<h3>Urna quis bibendum</h3>
-									<p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
-								</section>
-								<section>
-									<span class="icon major fa-gem"></span>
-									<h3>Aliquam urna dapibus</h3>
-									<p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
-								</section>
-							</div>
+							<h2>Total Pollution</h2>
+							<div style="width: 100%;"><canvas id="totalPollution" style="background-color: rgb(255, 255, 255);"></canvas></div>
+							<br>
 							<ul class="actions">
-								<li><a href="generic.html" class="button">Learn more</a></li>
+								<li><a class="button" onclick="cTP.resetZoom()">Reset Zoom</a></li>
 							</ul>
 						</div>
 					</section>
-
+					<script>
+						var cTP;
+						fetch("https://opensheet.elk.sh/1JCY1OJkJhyJ9NF5QJVESdD4U5mVqxqXpxi--vDf3Yek/Data")
+						.then((res) => res.json())
+						.then((data) => {
+							cTP = new Chart(
+								document.getElementById('totalPollution'),{
+									type: 'line',
+									data: {
+										labels: data.map(row => row.gDate),
+										datasets: [{
+											label: 'Pollution',
+											data: data.map(row => {
+												if (row.globalPollution != undefined) {
+													var test = row.globalPollution;
+													test = test.replace(/,/g, '')
+													console.log(test)
+													return test;
+												}
+											}),
+											borderColor: '#ff0000',
+											borderWidth: 1,
+											backgroundColor: '#ffffff',
+											pointStyle: 'circle',
+											pointRadius: 3,
+											pointHoverRadius: 7
+										}]
+									},
+									options: {
+										plugins: {
+											zoom: {
+												pan: { enabled: true, mode: 'x' },
+												zoom: { wheel: { enabled: true, }, drag: { enabled: true }
+												}
+											}
+										}
+									}
+								}
+							);
+						});
+					</script>
+	
 				<!-- Three -->
 					<section id="three" class="wrapper style1 fade-up">
 						<div class="inner">
-							<h2>Get in touch</h2>
-							<p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus, lacus eget hendrerit bibendum, urna est aliquam sem, sit amet imperdiet est velit quis lorem.</p>
-							<div class="split style1">
-								<section>
-									<form method="post" action="#">
-										<div class="fields">
-											<div class="field half">
-												<label for="name">Name</label>
-												<input type="text" name="name" id="name" />
-											</div>
-											<div class="field half">
-												<label for="email">Email</label>
-												<input type="text" name="email" id="email" />
-											</div>
-											<div class="field">
-												<label for="message">Message</label>
-												<textarea name="message" id="message" rows="5"></textarea>
-											</div>
-										</div>
-										<ul class="actions">
-											<li><a href="" class="button submit">Send Message</a></li>
-										</ul>
-									</form>
-								</section>
-								<section>
-									<ul class="contact">
-										<li>
-											<h3>Address</h3>
-											<span>12345 Somewhere Road #654<br />
-											Nashville, TN 00000-0000<br />
-											USA</span>
-										</li>
-										<li>
-											<h3>Email</h3>
-											<a href="#">user@untitled.tld</a>
-										</li>
-										<li>
-											<h3>Phone</h3>
-											<span>(000) 000-0000</span>
-										</li>
-										<li>
-											<h3>Social</h3>
-											<ul class="icons">
-												<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-												<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-												<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
-												<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-												<li><a href="#" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
-											</ul>
-										</li>
-									</ul>
-								</section>
-							</div>
+							<h2>Daily Pollution</h2>
+							<div style="width: 100%;"><canvas id="dailytPollution" style="background-color: rgb(255, 255, 255);"></canvas></div>
+							<br>
+							<ul class="actions">
+								<li><a class="button" onclick="cDP.resetZoom()">Reset Zoom</a></li>
+							</ul>
 						</div>
 					</section>
-
+					<script>
+						var cDP;
+						fetch("https://opensheet.elk.sh/1JCY1OJkJhyJ9NF5QJVESdD4U5mVqxqXpxi--vDf3Yek/Data")
+						.then((res) => res.json())
+						.then((data) => {
+							cDP = new Chart(
+								document.getElementById('dailytPollution'),{
+									type: 'line',
+									data: {
+										labels: data.map(row => row.gDate),
+										datasets: [{
+											label: 'Pollution',
+											data: data.map(row => {
+												if (row.dailyPollution != undefined) {
+													var test = row.dailyPollution;
+													test = test.replace(/,/g, '')
+													return test;
+												}
+											}),
+											borderColor: '#ff0000',
+											borderWidth: 1,
+											backgroundColor: '#ffffff',
+											pointStyle: 'circle',
+											pointRadius: 3,
+											pointHoverRadius: 7
+										}]
+									},
+									options: {
+										plugins: {
+											zoom: {
+												pan: { enabled: true, mode: 'x' },
+												zoom: { wheel: { enabled: true, }, drag: { enabled: true }
+												}
+											}
+										}
+									}
+								}
+							);
+						});
+					</script>
+	
 			</div>
 
 		<!-- Footer -->
