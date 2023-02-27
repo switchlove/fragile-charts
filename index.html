@@ -6,6 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.0/dist/chartjs-plugin-zoom.min.js"></script>
 	</head>
 	<body class="is-preload">
@@ -58,7 +59,11 @@
 								document.getElementById('totalCitizens'),{
 									type: 'line',
 									data: {
-										labels: data.map(row => row.gDate),
+										labels: data.map(row => {
+											if (row.gDate != '-') {
+												return row.gDate;
+											}
+										}),
 										datasets: [{
 											label: 'Citizens',
 											data: data.map(row => {
@@ -80,8 +85,7 @@
 										plugins: {
 											zoom: {
 												pan: { enabled: true, mode: 'x' },
-												zoom: { wheel: { enabled: true, }, drag: { enabled: true }
-												}
+												zoom: { wheel: { enabled: true }, drag: { enabled: true }, pinch: { enabled: true } }
 											}
 										}
 									}
@@ -109,7 +113,11 @@
 								document.getElementById('totalPollution'),{
 									type: 'line',
 									data: {
-										labels: data.map(row => row.gDate),
+										labels: data.map(row => {
+											if (row.gDate != '-') {
+												return row.gDate;
+											}
+										}),
 										datasets: [{
 											label: 'Pollution',
 											data: data.map(row => {
@@ -131,8 +139,7 @@
 										plugins: {
 											zoom: {
 												pan: { enabled: true, mode: 'x' },
-												zoom: { wheel: { enabled: true, }, drag: { enabled: true }
-												}
+												zoom: { wheel: { enabled: true }, drag: { enabled: true }, pinch: { enabled: true } }
 											}
 										}
 									}
@@ -161,7 +168,11 @@
 								document.getElementById('dailytPollution'),{
 									type: 'line',
 									data: {
-										labels: data.map(row => row.gDate),
+										labels: data.map(row => {
+											if (row.gDate != '-') {
+												return row.gDate;
+											}
+										}),
 										datasets: [{
 											label: 'Pollution',
 											data: data.map(row => {
@@ -180,11 +191,11 @@
 										}]
 									},
 									options: {
+										animation: false,
 										plugins: {
 											zoom: {
 												pan: { enabled: true, mode: 'x' },
-												zoom: { wheel: { enabled: true, }, drag: { enabled: true }
-												}
+												zoom: { wheel: { enabled: true }, drag: { enabled: true }, pinch: { enabled: true } }
 											}
 										}
 									}
